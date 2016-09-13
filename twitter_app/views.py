@@ -1,5 +1,3 @@
-from . import app
-
 from flask import render_template
 from flask import request, redirect, url_for
 
@@ -9,42 +7,113 @@ from werkzeug.security import check_password_hash
 
 from flask.ext.login import login_required
 
-from redis import Redis
-from rq import Queue
-from rq.job import Job
-
 from .database import session, Tweet, User
-from .twitter_streaming import Main
 import json
 import pandas as pd
-
-def get_tweets():
-        num_tweets_to_grab = 20
-        program = Main(num_tweets_to_grab)
-        program.get_streaming_data()
+from . import app
 
 @app.route("/")   
 def homepage():
-    q = Queue(connection=Redis())
-    results = q.enqueue(get_tweets, result_ttl=5000)
-    db_tweet = session.query(Tweet)
-    tweet_text = db_tweet.text
-    tweet_id = db_tweet.tweet_lang
-    print (db_tweet)
-    print(results.get_id())
-    return render_template("base.html",results=results,tweet_id=tweet_id,tweet_text=tweet_text)
+    db_tweet = session.query(Tweet).all()
+    db_tweet_location = session.query(Tweet.location)
+    db_tweet_location_decoded = []
+    for item in db_tweet_location:
+        db_tweet_location_decoded.append(item)
+    print (len(db_tweet))
+    return render_template("base.html",db_tweet=db_tweet, db_tweet_location_decoded=db_tweet_location_decoded)
 
-@app.route("/results/<job_key>", methods = ['GET'])
-    # need to render templates, build template file
-    # need to have the view stream stop after a certain number of tweets
-def get_results(job_key):
+@app.route("/user_lang")
+def user_language():
+    x = []
+    user_language = session.query(Tweet.user_lang)
+    for i in user_language:
+        x.append(i)
+    json_data = json.dumps(x)
+    return render_template("user_lang.html", json_data=json_data)
 
-    job = Job.fetch(job_key, connection=Redis())
+@app.route("/location")
+def user_location():
+    x = []
+    user_location = session.query(Tweet.location)
+    for i in user_location:
+        x.append(i)
+    json_data = json.dumps(x)
+    return render_template("location.html", json_data=json_data)
 
-    if job.is_finished:
-        return str(job.result), 200
-    else:
-        return "Nay!", 202
+@app.route("/coordinates")
+def coordinates():
+    x = []
+    coordinates = session.query(Tweet.coordinates)
+    for i in coordinates:
+        x.append(i)
+    json_data = json.dumps(x)
+    return render_template("coordinates.html", json_data=json_data)
+
+@app.route("/created_at")
+def created_at():
+    x = []
+    created_at = session.query(Tweet.created_at)
+    for i in created_at:
+        x.append(i)
+    json_data = json.dumps(x)
+    return render_template("created_at.html", json_data=json_data)
+
+@app.route("/favorite_count")
+def favorite_count():
+    x = []
+    favorite_count = session.query(Tweet.favorite_count)
+    for i in favorite_count:
+        x.append(i)
+    json_data = json.dumps(x)
+    return render_template("favorite_count.html", json_data=json_data)
+
+@app.route("/tweet_lang")
+def tweet_language():
+    x = []
+    tweet_language = session.query(Tweet.tweet_lang)
+    for i in tweet_language:
+        x.append(i)
+    json_data = json.dumps(x)
+    return render_template("tweet_lang.html", json_data=json_data)
+
+@app.route("/retweet_count")
+def retweet_count():
+    x = []
+    retweet_count = session.query(Tweet.retweet_count)
+    for i in retweet_count:
+        x.append(i)
+    json_data = json.dumps(x)
+    return render_template("retweet_count.html", json_data=json_data)
+
+@app.route("/text")
+def text():
+    x = []
+    text = session.query(Tweet.text)
+    for i in text:
+        x.append(i)
+    json_data = json.dumps(x)
+    return render_template("text.html", json_data=json_data)
+
+@app.route("/hashtag")
+def hashtag():
+    x = []
+    hashtag = session.query(Tweet.hashtag)
+    for i in hashtag:
+        x.append(i)
+    json_data = json.dumps(x)
+    return render_template("hashtag.html", json_data=json_data)
+
+# #@app.route("/results/<job_key>", methods = ['GET'])
+#     # need to render templates, build template file
+#     # need to have the view stream stop after a certain number of tweets
+# #def get_results(job_key):
+
+#     #job = Job.fetch(job_key, connection=Redis())
+
+#     #if job.is_finished:
+#         return str(job.result), 200
+#     else:
+#         return "Nay!", 202
 
 
 @app.route("/login", methods=["GET"])

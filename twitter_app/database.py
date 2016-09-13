@@ -34,7 +34,7 @@ class Tweet(Base):
     favorite_count = Column(Integer, nullable = True)
     tweet_lang = Column(String(128), nullable = True)
     retweet_count = Column(Integer, nullable = True)
-    text = Column(String(128))
+    text = Column(String(3000))
     hashtag = Column(String(128), nullable = True)
     
 Base.metadata.create_all(engine)
