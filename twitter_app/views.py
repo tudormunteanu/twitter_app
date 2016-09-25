@@ -85,16 +85,14 @@ def create_chart():
 @app.route("/user_lang")
 def user_language():
     user_language = session.query(Tweet.user_lang)
-    d = defaultdict(int)
-    for language in user_language:
-        d[language] += 1
-    lang = list(d.keys())
-    new_list = []
-    for item in lang:
-        new_list.append(item[0])
-    count = list(d.values())
-    print(type(lang))
-    return render_template("user_lang.html", d=d, new_list=new_list, count=count)
+    user_language_test = []
+    for i in user_language:
+        user_language_test.append(i[0])
+    d = Counter(user_language_test)
+    chart_values = [{"value": value, "label": key} for key, value in d.items()]
+    full_chart_values = [{"values": chart_values, "key": "Series 1"}]
+    print(full_chart_values)
+    return render_template("user_lang.html", full_chart_values=full_chart_values)
 
 @app.route("/location")
 def user_location():
@@ -134,12 +132,15 @@ def favorite_count():
 
 @app.route("/tweet_lang")
 def tweet_language():
-    x = []
     tweet_language = session.query(Tweet.tweet_lang)
+    tweet_language_test = []
     for i in tweet_language:
-        x.append(i)
-    json_data = json.dumps(x)
-    return render_template("tweet_lang.html", json_data=json_data)
+        tweet_language_test.append(i[0])
+    d = Counter(tweet_language_test)
+    chart_values = [{"value": value, "label": key} for key, value in d.items()]
+    full_chart_values = [{"values": chart_values, "key": "Series 1"}]
+    print(full_chart_values)
+    return render_template("tweet_lang.html", full_chart_values=full_chart_values)
 
 @app.route("/retweet_count")
 def retweet_count():

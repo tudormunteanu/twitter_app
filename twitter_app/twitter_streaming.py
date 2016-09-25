@@ -24,10 +24,13 @@ class StdOutListener(StreamListener):
     def on_data(self, data):
         try:
             json_data = json.loads(data)
+            logging.info("===")
+            logging.info(json_data)
+            logging.info("===")
             tweet = Tweet()
             if json_data["user"]:
                 if json_data["user"]["location"]:
-                    tweet.location = json_data["user"]["location"].decode("utf-8")
+                    tweet.location = json_data["user"]["location"].encode("utf-8")
                     logging.error(tweet.location)
             if json_data["user"]:
                 if json_data["user"]["lang"]:
@@ -49,7 +52,7 @@ class StdOutListener(StreamListener):
                 tweet.retweet_count = json_data["retweet_count"]
                 logging.error(tweet.retweet_count)
             if json_data["text"]:
-                tweet.text = json_data["text"]
+                tweet.text = json_data["text"].encode("utf-8")
                 logging.error(tweet.text)
             #if  json_data["entities"]:
                #if json_data["entities"]["hashtags"]:
@@ -65,9 +68,8 @@ class StdOutListener(StreamListener):
 
             return True
         except Exception as e:
-            pass
             #logging.error("Keyword requested, but didn't exist. Here is the returned data .{}".format(data))
-            #logging.error(e)
+            logging.error(e)
 
     def on_error(self, status):
         print(status)
