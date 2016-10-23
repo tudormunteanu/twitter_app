@@ -17,8 +17,16 @@ def run():
     
 @manager.command
 def tweepy_worker():
+    #os.system("sudo service redis-server start")
+    #os.system("rq worker")
     q = Queue(connection=Redis())
-    result = q.enqueue(get_tweets, result_ttl=5000)
+    tweet_number = input("How many tweets do you want?")
+    # maybe do this as sys arg?
+    try:
+        number = int(tweet_number)
+    except ValueError:
+        print("Please enter a valid number")
+    result = q.enqueue(get_tweets, result_ttl=5000, number=number)
     print(result)
     
 if __name__ == "__main__":

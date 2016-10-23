@@ -1,11 +1,216 @@
 {% extends "base.html" %}
 {% block content %}
-
+    <head>
+        <meta charset="utf-8" />
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.7.0/nv.d3.min.css" rel="stylesheet" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.7.0/nv.d3.min.js"></script>
+    </head>
     <p>
         JSON Created At - Created At
     </p>
         
+    <body>
+    
     <p>{{json_data}}</p>
+    
+    <p>{{day_counter}}</p>
+    
+    <p>{{month_counter}}</p>
+    
+    <p>{{month_date_counter}}</p>
+    
+    <p>{{year_counter}}</p>
+    
+    <p>{{full_chart_values_day}}</p>
+    
+    <p>{{full_chart_values_month}}</p>
+    
+    <p>{{full_chart_values_month_date}}</p>
+    
+    <p>{{full_chart_values_year}}</p>
+    
+    <div class="row">
+      
+    <div id="discretebarchart" class="col-md-6"><svg style="width:400px;height:400px;"></svg></div>
+    
+    <div id="discretebarchart2" class="col-md-6"><svg style="width:400px;height:400px;"></svg></div>
+    
+    <div id="discretebarchart3" class="col-md-6"><svg style="width:400px;height:400px;"></svg></div>
+    
+    <div id="discretebarchart4" class="col-md-6"><svg style="width:400px;height:400px;"></svg></div>
+    
+    </div>
 
+    <script>
+
+
+
+        //data_discretebarchart=[{"yAxis": "1", "key": "Serie 1", "values": [{"x": "Sun", "y": 73}]}];
+        //data_discretebarchart={{full_chart_values_day|safe}};
+        
+        d3.json("/created_at_day_api", function(dataSet){
+        console.log(dataSet)
+
+            nv.addGraph(function() {
+        var chart = nv.models.discreteBarChart();
+
+        chart.margin({top: 30, right: 60, bottom: 20, left: 60});
+
+        var datum = dataSet;
+
+
+
+                    chart.yAxis
+                .tickFormat(d3.format(',.0f'));
+
+    
+    
+
+        
+
+
+
+            d3.select('#discretebarchart svg')
+            .datum(datum)
+            .transition().duration(500)
+            .attr('width', 400)
+            .attr('height', 400)
+            .call(chart);
+
+    
+        });
+
+        });
+
+    </script>
+    
+    <script>
+
+
+
+        //data_discretebarchart=[{"yAxis": "1", "key": "Serie 1", "values": [{"x": "Sun", "y": 73}]}];
+        //data_discretebarchart2={{full_chart_values_month|safe}};
+        
+        d3.json("/created_at_month_api", function(dataSet){
+        console.log(dataSet)
+
+            nv.addGraph(function() {
+        var chart = nv.models.discreteBarChart();
+
+        chart.margin({top: 30, right: 60, bottom: 20, left: 60});
+
+        var datum = dataSet;
+
+
+
+                    chart.yAxis
+                .tickFormat(d3.format(',.0f'));
+
+    
+    
+
+        
+
+
+
+            d3.select('#discretebarchart2 svg')
+            .datum(datum)
+            .transition().duration(500)
+            .attr('width', 400)
+            .attr('height', 400)
+            .call(chart);
+
+    
+        });
+
+        });
+
+    </script>
+    
+    <script>
+
+
+
+        //data_discretebarchart=[{"yAxis": "1", "key": "Serie 1", "values": [{"x": "Sun", "y": 73}]}];
+        data_discretebarchart3={{full_chart_values_month_date|safe}};
+
+            nv.addGraph(function() {
+        var chart = nv.models.discreteBarChart();
+
+        chart.margin({top: 30, right: 60, bottom: 20, left: 60});
+
+        var datum = data_discretebarchart3;
+
+
+
+                    chart.yAxis
+                .tickFormat(d3.format(',.0f'));
+
+    
+    
+
+        
+
+
+
+            d3.select('#discretebarchart3 svg')
+            .datum(datum)
+            .transition().duration(500)
+            .attr('width', 400)
+            .attr('height', 400)
+            .call(chart);
+
+    
+        });
+
+
+
+    </script>
+    
+    <script>
+
+
+
+        //data_discretebarchart=[{"yAxis": "1", "key": "Serie 1", "values": [{"x": "Sun", "y": 73}]}];
+        //data_discretebarchart4={{full_chart_values_year|safe}};
+        
+        d3.json("/created_at_year_api", function(dataSet){
+        console.log(dataSet)
+
+            nv.addGraph(function() {
+        var chart = nv.models.discreteBarChart();
+
+        chart.margin({top: 30, right: 60, bottom: 20, left: 60});
+
+        var datum = dataSet;
+
+
+
+                    chart.yAxis
+                .tickFormat(d3.format(',.0f'));
+
+    
+    
+
+        
+
+
+
+            d3.select('#discretebarchart4 svg')
+            .datum(datum)
+            .transition().duration(500)
+            .attr('width', 400)
+            .attr('height', 400)
+            .call(chart);
+
+    
+        });
+
+        });
+
+    </script>
+
+    </body>
 
 {% endblock %}
