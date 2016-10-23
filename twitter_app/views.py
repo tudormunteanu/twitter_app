@@ -27,62 +27,6 @@ def homepage():
     print (len(db_tweet))
     return render_template("base.html",db_tweet=db_tweet, db_tweet_location_decoded=db_tweet_location_decoded)
 
-@app.route("/demo")
-def demo_chart():
-    from nvd3 import pieChart
-
-    # Open File to write the D3 Graph
-    output_file = open('demo.html', 'w')
-
-    type = 'pieChart'
-    chart = pieChart(name=type, color_category='category20c', height=450, width=450)
-    chart.set_containerheader("\n\n<h2>" + type + "</h2>\n\n")
-
-    xdata = ["Orange", "Banana", "Pear", "Kiwi", "Apple", "Strawberry", "Pineapple"]
-    ydata = [3, 4, 0, 1, 5, 7, 3]
-
-    extra_serie = {"tooltip": {"y_start": "", "y_end": " cal"}}
-    chart.add_serie(y=ydata, x=xdata, extra=extra_serie)
-    chart.buildhtml()
-    output_file.write(chart.htmlcontent)
-
-    # close Html file
-    output_file.close()
-
-
-@app.route("/test")
-def create_chart():
-    # Open File to write the D3 Graph
-    output_file = open('output.html', 'w')
-
-    type = 'pieChart'
-    chart = pieChart(name=type, color_category='category20c', height=450, width=450)
-    chart.set_containerheader("\n\n<h2>" + type + "</h2>\n\n")
-
-    x = []
-    xdata = []
-    ydata = []
-    user_language = session.query(Tweet.user_lang)
-    d = defaultdict(int)
-    for language in user_language:
-        d[language] += 1
-    language = list(d.keys())
-    new_list = []
-    for item in language:
-        new_list.append(item[0])
-    count = list(d.values())
-    xdata = new_list
-    ydata = count
-
-    extra_serie = {"tooltip": {"y_start": "", "y_end": " cal"}}
-    chart.add_serie(y=ydata, x=xdata, extra=extra_serie)
-    chart.buildhtml()
-    output_file.write(chart.htmlcontent)
-
-    # close Html file
-    output_file.close()
-    return render_template("test-nvd3.html")
-
 @app.route("/user_lang")
 def user_language():
     return render_template("user_lang.html")
@@ -121,9 +65,6 @@ def created_at_day_api():
     x = []
     x2 = []
     day_clean = []
-    month_clean = []
-    month_date_clean = []
-    year_clean = []
     created_at = session.query(Tweet.created_at)
     for i in created_at:
         x.append(i)
@@ -133,33 +74,18 @@ def created_at_day_api():
         day_clean.append(datetime.datetime.strptime(i, "%a  %b %d %H:%M:%S %z %Y").day)
     #count them up
     day_counter = Counter(day_clean)
-    #month_counter = Counter(month_clean)
-    #month_date_counter = Counter(month_date_clean)
-    #year_counter = Counter(year_clean)
     #build the chart values for day
     chart_values_day = [{"y": value, "x": key} for key, value in day_counter.items()]
     chart_values_day.sort(key=lambda i: i["x"])
     print(chart_values_day)
     data = [{"yAxis": "1","values": chart_values_day, "key": "Day of the Week"}]
-    #build the chart values for month
-    #chart_values_month = [{"y": value, "x": key} for key, value in month_counter.items()]
-    #full_chart_values_month = [{"yAxis": "1","values": chart_values_month, "key": "Month"}]
-    #build the chart values for month and date
-    #chart_values_month_date = [{"y": value, "x": key} for key, value in month_date_counter.items()]
-    #full_chart_values_month_date = [{"yAxis": "1","values": chart_values_month_date, "key": "Date"}]
-    #build the chart values for year
-    #chart_values_year = [{"y": value, "x": key} for key, value in year_counter.items()]
-    #full_chart_values_year = [{"yAxis": "1","values": chart_values_year, "key": "Year"}]
     return Response(json.dumps(data), 201, mimetype="application/json")
 
 @app.route("/created_at_month_api")
 def created_at_month_api():
     x = []
     x2 = []
-    #day_clean = []
     month_clean = []
-    #month_date_clean = []
-    #year_clean = []
     created_at = session.query(Tweet.created_at)
     for i in created_at:
         x.append(i)
@@ -168,38 +94,18 @@ def created_at_month_api():
     # break out the individual time unites
     for i in x2:
         month_clean.append(datetime.datetime.strptime(i, "%a  %b %d %H:%M:%S %z %Y").month)
-        #day_clean.append(i[:3])
-        #month_clean.append(i[4:7])
-        #month_date_clean.append(i[4:10])
-        #year_clean.append(i[26:30])
-    #count them up
-    #day_counter = Counter(day_clean)
     month_counter = Counter(month_clean)
-    #month_date_counter = Counter(month_date_clean)
-    #year_counter = Counter(year_clean)
-    #build the chart values for day
-    #chart_values_day = [{"y": value, "x": key} for key, value in day_counter.items()]
-    #data = [{"yAxis": "1","values": chart_values_day, "key": "Day of the Week"}]
     #build the chart values for month
     chart_values_month = [{"y": value, "x": key} for key, value in month_counter.items()]
     chart_values_month.sort(key=lambda i: i["x"])
     print(chart_values_month)
     data = [{"yAxis": "1","values": chart_values_month, "key": "Month"}]
-    #build the chart values for month and date
-    #chart_values_month_date = [{"y": value, "x": key} for key, value in month_date_counter.items()]
-    #full_chart_values_month_date = [{"yAxis": "1","values": chart_values_month_date, "key": "Date"}]
-    #build the chart values for year
-    #chart_values_year = [{"y": value, "x": key} for key, value in year_counter.items()]
-    #full_chart_values_year = [{"yAxis": "1","values": chart_values_year, "key": "Year"}]
     return Response(json.dumps(data), 201, mimetype="application/json")
     
 @app.route("/created_at_year_api")
 def created_at_year_api():
     x = []
     x2 = []
-    #day_clean = []
-    #month_clean = []
-    #month_date_clean = []
     year_clean = []
     created_at = session.query(Tweet.created_at)
     for i in created_at:
@@ -209,25 +115,8 @@ def created_at_year_api():
     # break out the individual time unites
     for i in x2:
         year_clean.append(datetime.datetime.strptime(i, "%a  %b %d %H:%M:%S %z %Y").year)
-        #day_clean.append(i[:3])
-        #month_clean.append(i[4:7])
-        #month_date_clean.append(i[4:10])
-        #year_clean.append(i[26:30])
     #count them up
-    #day_counter = Counter(day_clean)
-    #month_counter = Counter(month_clean)
-    #month_date_counter = Counter(month_date_clean)
     year_counter = Counter(year_clean)
-    #build the chart values for day
-    #chart_values_day = [{"y": value, "x": key} for key, value in day_counter.items()]
-    #data = [{"yAxis": "1","values": chart_values_day, "key": "Day of the Week"}]
-    #build the chart values for month
-    #chart_values_month = [{"y": value, "x": key} for key, value in month_counter.items()]
-    #data = [{"yAxis": "1","values": chart_values_month, "key": "Month"}]
-    #build the chart values for month and date
-    #chart_values_month_date = [{"y": value, "x": key} for key, value in month_date_counter.items()]
-    #full_chart_values_month_date = [{"yAxis": "1","values": chart_values_month_date, "key": "Date"}]
-    #build the chart values for year
     chart_values_year = [{"y": value, "x": key} for key, value in year_counter.items()]
     chart_values_year.sort(key=lambda i: i["x"])
     print(chart_values_year)
@@ -308,19 +197,6 @@ def hashtag():
         x.append(i)
     json_data = json.dumps(x)
     return render_template("hashtag.html", json_data=json_data)
-
-# #@app.route("/results/<job_key>", methods = ['GET'])
-#     # need to render templates, build template file
-#     # need to have the view stream stop after a certain number of tweets
-# #def get_results(job_key):
-
-#     #job = Job.fetch(job_key, connection=Redis())
-
-#     #if job.is_finished:
-#         return str(job.result), 200
-#     else:
-#         return "Nay!", 202
-
 
 @app.route("/login", methods=["GET"])
 def login_get():
