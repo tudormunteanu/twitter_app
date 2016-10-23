@@ -1,15 +1,11 @@
-{% extends "base.html" %}
-{% block content %}
+<!DOCTYPE html>
+<html lang="en">
     <head>
         <meta charset="utf-8" />
         <link href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.7.0/nv.d3.min.css" rel="stylesheet" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.7.0/nv.d3.min.js"></script>
     </head>
-    <p>
-        JSON Created At - Created At
-    </p>
-        
     <body>
     
     <p>{{json_data}}</p>
@@ -30,34 +26,27 @@
     
     <p>{{full_chart_values_year}}</p>
     
-    <div class="row">
-      
-    <div id="discretebarchart" class="col-md-6"><svg style="width:400px;height:400px;"></svg></div>
+    <div id="discretebarchart"><svg style="width:400px;height:400px;"></svg></div>
     
-    <div id="discretebarchart2" class="col-md-6"><svg style="width:400px;height:400px;"></svg></div>
+    <div id="discretebarchart2"><svg style="width:400px;height:400px;"></svg></div>
     
-    <div id="discretebarchart3" class="col-md-6"><svg style="width:400px;height:400px;"></svg></div>
+    <div id="discretebarchart3"><svg style="width:400px;height:400px;"></svg></div>
     
-    <div id="discretebarchart4" class="col-md-6"><svg style="width:400px;height:400px;"></svg></div>
-    
-    </div>
+    <div id="discretebarchart4"><svg style="width:400px;height:400px;"></svg></div>
 
     <script>
 
 
 
         //data_discretebarchart=[{"yAxis": "1", "key": "Serie 1", "values": [{"x": "Sun", "y": 73}]}];
-        //data_discretebarchart={{full_chart_values_day|safe}};
-        
-        d3.json("/created_at_day_api", function(dataSet){
-        console.log(dataSet)
+        data_discretebarchart={{full_chart_values_day|safe}};
 
             nv.addGraph(function() {
         var chart = nv.models.discreteBarChart();
 
         chart.margin({top: 30, right: 60, bottom: 20, left: 60});
 
-        var datum = dataSet;
+        var datum = data_discretebarchart;
 
 
 
@@ -81,7 +70,7 @@
     
         });
 
-        });
+
 
     </script>
     
@@ -90,17 +79,14 @@
 
 
         //data_discretebarchart=[{"yAxis": "1", "key": "Serie 1", "values": [{"x": "Sun", "y": 73}]}];
-        //data_discretebarchart2={{full_chart_values_month|safe}};
-        
-        d3.json("/created_at_month_api", function(dataSet){
-        console.log(dataSet)
+        data_discretebarchart2={{full_chart_values_month|safe}};
 
             nv.addGraph(function() {
         var chart = nv.models.discreteBarChart();
 
         chart.margin({top: 30, right: 60, bottom: 20, left: 60});
 
-        var datum = dataSet;
+        var datum = data_discretebarchart2;
 
 
 
@@ -124,7 +110,7 @@
     
         });
 
-        });
+
 
     </script>
     
@@ -173,17 +159,14 @@
 
 
         //data_discretebarchart=[{"yAxis": "1", "key": "Serie 1", "values": [{"x": "Sun", "y": 73}]}];
-        //data_discretebarchart4={{full_chart_values_year|safe}};
-        
-        d3.json("/created_at_year_api", function(dataSet){
-        console.log(dataSet)
+        data_discretebarchart4={{full_chart_values_year|safe}};
 
             nv.addGraph(function() {
         var chart = nv.models.discreteBarChart();
 
         chart.margin({top: 30, right: 60, bottom: 20, left: 60});
 
-        var datum = dataSet;
+        var datum = data_discretebarchart4;
 
 
 
@@ -207,10 +190,9 @@
     
         });
 
-        });
+
 
     </script>
 
     </body>
-
-{% endblock %}
+</html>

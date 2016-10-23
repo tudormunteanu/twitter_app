@@ -10,11 +10,9 @@
         <link rel="stylesheet" href="https://cdn.rawgit.com/novus/nvd3/v1.8.1/build/nv.d3.css">
         <script src="https://cdn.rawgit.com/novus/nvd3/v1.8.1/build/nv.d3.min.js"></script>
         <script src="https://d3js.org/d3.v4.min.js"></script>
-        <!-- CSS -->>
+        <!-- CSS -->
         <!-- Bootstrap -->
-        <link href=
-        "//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel=
-        "stylesheet">
+        <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
         <!-- JavaScript -->
         <!-- JS -->
         <!-- jQuery -->
@@ -30,14 +28,11 @@
                 <!-- Brand and toggle get grouped for better mobile display -->
 
                 <div class="navbar-header">
-                    <button aria-expanded="false" class=
-                    "navbar-toggle collapsed" data-target=
-                    "#bs-example-navbar-collapse-1" data-toggle="collapse"
-                    type="button"><span class="sr-only">Toggle
-                    navigation</span> <span class="icon-bar"></span>
-                    <span class="icon-bar"></span> <span class=
-                    "icon-bar"></span></button> <a class="navbar-brand" href=
-                    "#">Eric's Twitter App</a>
+                    <button aria-expanded="false" class="navbar-toggle collapsed" data-target="#bs-example-navbar-collapse-1" data-toggle="collapse">
+                        <span class="sr-only">Toggle navigation</span> 
+                        <span class="icon-bar"></span>
+                    <span class="icon-bar"></span> <span class="icon-bar"></span>
+                    </button> <a class="navbar-brand" href="#">Eric's Twitter App</a>
                 </div>
                 <!-- Collect the nav links, forms, and other content for toggling -->
 
@@ -53,19 +48,19 @@
                         <li class="dropdown">
                             <a aria-expanded="false" aria-haspopup="true"
                             class="dropdown-toggle" data-toggle="dropdown"
-                            href="#" role="button">Dropdown <span class=
+                            href="#" role="button">Reports <span class=
                             "caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <a href="#">Action</a>
+                                    <a href="{{ url_for('user_language') }}">User Language</a>
                                 </li>
 
                                 <li>
-                                    <a href="#">Another action</a>
+                                    <a href="{{ url_for('tweet_language') }}">Tweet Language</a>
                                 </li>
 
                                 <li>
-                                    <a href="#">Something else here</a>
+                                    <a href="{{ url_for('created_at') }}">Time Created</a>
                                 </li>
 
                                 <li class="divider" role="separator">
@@ -86,82 +81,6 @@
         <div class="container">
             {% block content %}{% endblock %}
         </div>
-
-        <p>
-            Hello World!
-        </p>
-        
-        <p>
-            Tweet_lang - Tweet Language
-        </p>
-        
-        {% for tweet in db_tweet %}
-        <p>{{tweet.tweet_lang}}</p>
-
-        {% endfor %}
-        
-        <p>
-            Tweet_text - Tweet Text
-        </p>
-        
-        {% for tweet in db_tweet %}
-        <p>{{tweet.text}}</p>
-
-        {% endfor %}
-        
-        <p>
-            Tweet_location - Tweet Location
-        </p>
-        
-        {% for tweet in db_tweet_location %}
-        <p>{{tweet.location}}</p>
-
-        {% endfor %}
-        
-        <p>
-            Tweet_location_decoded - Tweet Language Decoded
-        </p>
-        
-        {% for tweet in db_tweet_location_decoded %}
-        <p>{{tweet.location}}</p>
-
-        {% endfor %}
-        
-        <p>
-            Tweet_User_language - User Language
-        </p>
-        
-        {% for tweet in db_tweet %}
-        <p>{{tweet.user_lang}}</p>
-
-        {% endfor %}
-        
-        <p>
-            Tweet_coordinates - Tweet Coordinates
-        </p>
-        
-        {% for tweet in db_tweet %}
-        <p>{{tweet.coordinates}}</p>
-
-        {% endfor %}
-        
-        <p>
-            Tweet_created_at - Created At
-        </p>
-        
-        {% for tweet in db_tweet %}
-        <p>{{tweet.created_at}}</p>
-
-        {% endfor %}
-        
-        <p>
-            Tweet_retweet_count - Retweet Count
-        </p>
-        
-        {% for tweet in db_tweet %}
-        <p>{{tweet.retweet_count}}</p>
-
-        {% endfor %}
         
     </body>
 </html>

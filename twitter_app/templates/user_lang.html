@@ -25,12 +25,14 @@
 
     //data_piechart=[{"values": [{"value": 1, "label": "ru"}, {"value": 7, "label": "en"}], "key": "Serie 1"}];
     //data_piechart=[{'key': 'Series 1', 'values': [{'label': 'es', 'value': 1}, {'label': 'ru', 'value': 2}, {'label': 'en', 'value': 46}, {'label': 'ar', 'value': 1}]}];
-    data_piechart = {{full_chart_values|safe}};
+    //data_piechart = {{full_chart_values|safe}};
+    d3.json("/user_language_api", function(dataSet){
+    console.log(dataSet)
 
     nv.addGraph(function() {
         var chart = nv.models.pieChart();
         chart.margin({top: 30, right: 60, bottom: 20, left: 60});
-        var datum = data_piechart[0].values;
+        var datum = dataSet[0].values;
 
         chart.color(d3.scale.category20c().range());
 
@@ -59,7 +61,7 @@
         chart.height(450);
 
 
-            d3.select('#piechart svg')
+        d3.select('#piechart svg')
             .datum(datum)
             .transition().duration(500)
             .attr('width', 450)
@@ -69,7 +71,7 @@
 
         });
 
-
+});
 
     </script>
 

@@ -10,9 +10,8 @@ from .database import session, Tweet, User
 # Set the log output file, and the log level
 logging.basicConfig(filename="twitter_stream.log", level=logging.DEBUG)
 
-def get_tweets():
-    num_tweets_to_grab = 20
-    program = Main(num_tweets_to_grab)
+def get_tweets(number):
+    program = Main(number)
     program.get_streaming_data()
 
 class StdOutListener(StreamListener):
@@ -30,7 +29,7 @@ class StdOutListener(StreamListener):
             tweet = Tweet()
             if json_data["user"]:
                 if json_data["user"]["location"]:
-                    tweet.location = json_data["user"]["location"].encode("utf-8")
+                    tweet.location = json_data["user"]["location"].encode("ascii","ignore").decode("utf-8", "ignore")
                     logging.error(tweet.location)
             if json_data["user"]:
                 if json_data["user"]["lang"]:
@@ -52,8 +51,8 @@ class StdOutListener(StreamListener):
                 tweet.retweet_count = json_data["retweet_count"]
                 logging.error(tweet.retweet_count)
             if json_data["text"]:
-                tweet.text = json_data["text"].encode("utf-8")
-                logging.error(tweet.text)
+                tweet.text = json_data["text"].encode("ascii","ignore").decode("utf-8", "ignore")
+                logging.error("=== text: %s"%tweet.text)
             #if  json_data["entities"]:
                #if json_data["entities"]["hashtags"]:
                    #tweet.hashtag = json_data["entities"]["hashtags"][1].encode("utf-8")
@@ -86,13 +85,9 @@ class Main():
         twitter_stream = Stream(self.auth, self.l)
         try:
             search_results = twitter_stream.filter(track=["trump"])
+            # need to pass this as an argument from the command line
             for result in search_results:
                 print(result)
 
         except Exception as e:
             print(e)
-
-if __name__ == "__main__":
-        num_tweets_to_grab = 20
-        program = Main(num_tweets_to_grab)
-        program.get_streaming_data()
