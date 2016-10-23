@@ -1,8 +1,0 @@
-INFO:werkzeug: * Running on http://0.0.0.0:8080/ (Press CTRL+C to quit)
-INFO:werkzeug: * Restarting with stat
-WARNING:werkzeug: * Debugger is active!
-INFO:werkzeug: * Debugger pin code: 338-836-999
-INFO:werkzeug:10.240.1.32 - - [23/Oct/2016 14:36:06] "GET / HTTP/1.1" 200 -
-INFO:werkzeug:10.240.0.182 - - [23/Oct/2016 14:36:08] "GET / HTTP/1.1" 200 -
-INFO:werkzeug:10.240.0.179 - - [23/Oct/2016 14:36:15] "GET /filter HTTP/1.1" 200 -
-INFO:werkzeug:10.240.0.206 - - [23/Oct/2016 14:36:15] "GET /node_modules/tablefilter/dist/tablefilter/tablefilter.js HTTP/1.1" 404 -
